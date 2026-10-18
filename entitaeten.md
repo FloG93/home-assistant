@@ -71,6 +71,7 @@ Hue-Bridge-eigene Automatisierungen (laufen in der Bridge, nicht in HA): `switch
 | Gerät | Raum | `device_id` |
 |---|---|---|
 | IKEA TRADFRI on/off switch (E1743) | Schlafzimmer | `c4d43ed7c7218e167b55741ae374bf26` |
+| IKEA TRADFRI on/off switch (E1743) | Haustür | `62b6da2418f423410e7f5177895c37bf` |
 
 ## Hinweis Schlafzimmer-Lampen
 
