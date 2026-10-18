@@ -1,0 +1,98 @@
+alias: Wohnzimmer Schalter (E1743) Licht
+description: Couch-Taster - Ein/Aus kurz schaltet die Wohnzimmer-Gruppe, Ein/Aus gehalten dimmt getaktet hoch/runter, Loslassen haelt an
+mode: restart
+triggers:
+  - trigger: device
+    domain: zha
+    device_id: 62b6da2418f423410e7f5177895c37bf
+    type: remote_button_short_press
+    subtype: turn_on
+    id: an
+  - trigger: device
+    domain: zha
+    device_id: 62b6da2418f423410e7f5177895c37bf
+    type: remote_button_short_press
+    subtype: turn_off
+    id: aus
+  - trigger: device
+    domain: zha
+    device_id: 62b6da2418f423410e7f5177895c37bf
+    type: remote_button_long_press
+    subtype: dim_up
+    id: heller
+  - trigger: device
+    domain: zha
+    device_id: 62b6da2418f423410e7f5177895c37bf
+    type: remote_button_long_press
+    subtype: dim_down
+    id: dunkler
+  - trigger: device
+    domain: zha
+    device_id: 62b6da2418f423410e7f5177895c37bf
+    type: remote_button_long_release
+    subtype: dim_up
+    id: stopp
+  - trigger: device
+    domain: zha
+    device_id: 62b6da2418f423410e7f5177895c37bf
+    type: remote_button_long_release
+    subtype: dim_down
+    id: stopp
+actions:
+  - choose:
+      - conditions:
+          - condition: trigger
+            id: an
+        sequence:
+          - action: light.turn_on
+            target:
+              entity_id: light.wohnzimmer_wohnzimmer
+      - conditions:
+          - condition: trigger
+            id: aus
+        sequence:
+          - action: light.turn_off
+            target:
+              entity_id: light.wohnzimmer_wohnzimmer
+      - conditions:
+          - condition: trigger
+            id: heller
+        sequence:
+          - repeat:
+              while:
+                - condition: template
+                  value_template: "{{ state_attr('light.wohnzimmer_wohnzimmer', 'brightness') | int(0) < 250 }}"
+                - condition: template
+                  value_template: "{{ repeat.index < 60 }}"
+              sequence:
+                - action: light.turn_on
+                  target:
+                    entity_id: light.wohnzimmer_wohnzimmer
+                  data:
+                    brightness_step_pct: 8
+                    transition: 0.3
+                - delay:
+                    milliseconds: 400
+      - conditions:
+          - condition: trigger
+            id: dunkler
+        sequence:
+          - repeat:
+              while:
+                - condition: template
+                  value_template: "{{ state_attr('light.wohnzimmer_wohnzimmer', 'brightness') | int(0) > 5 }}"
+                - condition: template
+                  value_template: "{{ repeat.index < 60 }}"
+              sequence:
+                - action: light.turn_on
+                  target:
+                    entity_id: light.wohnzimmer_wohnzimmer
+                  data:
+                    brightness_step_pct: -8
+                    transition: 0.3
+                - delay:
+                    milliseconds: 400
+      - conditions:
+          - condition: trigger
+            id: stopp
+        sequence: []
