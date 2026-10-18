@@ -1,5 +1,5 @@
 alias: Schlafzimmer Schalter (E1743) Licht
-description: Ein/Aus kurz schaltet die Gruppe, Ein/Aus gehalten dimmt per Lampen-Transition hoch/runter, Loslassen friert ein
+description: Ein/Aus kurz schaltet die Hue-Gruppe, Ein/Aus gehalten dimmt getaktet hoch/runter, Loslassen haelt an
 mode: restart
 triggers:
   - trigger: device
@@ -58,29 +58,41 @@ actions:
           - condition: trigger
             id: heller
         sequence:
-          - action: light.turn_on
-            target:
-              entity_id: light.schlafzimmer_schlafzimmer
-            data:
-              brightness_pct: 100
-              transition: 3
+          - repeat:
+              while:
+                - condition: template
+                  value_template: "{{ state_attr('light.schlafzimmer_schlafzimmer', 'brightness') | int(0) < 250 }}"
+                - condition: template
+                  value_template: "{{ repeat.index < 60 }}"
+              sequence:
+                - action: light.turn_on
+                  target:
+                    entity_id: light.schlafzimmer_schlafzimmer
+                  data:
+                    brightness_step_pct: 8
+                    transition: 0.3
+                - delay:
+                    milliseconds: 400
       - conditions:
           - condition: trigger
             id: dunkler
         sequence:
-          - action: light.turn_on
-            target:
-              entity_id: light.schlafzimmer_schlafzimmer
-            data:
-              brightness_pct: 1
-              transition: 3
+          - repeat:
+              while:
+                - condition: template
+                  value_template: "{{ state_attr('light.schlafzimmer_schlafzimmer', 'brightness') | int(0) > 5 }}"
+                - condition: template
+                  value_template: "{{ repeat.index < 60 }}"
+              sequence:
+                - action: light.turn_on
+                  target:
+                    entity_id: light.schlafzimmer_schlafzimmer
+                  data:
+                    brightness_step_pct: -8
+                    transition: 0.3
+                - delay:
+                    milliseconds: 400
       - conditions:
           - condition: trigger
             id: stopp
-        sequence:
-          - action: light.turn_on
-            target:
-              entity_id: light.schlafzimmer_schlafzimmer
-            data:
-              brightness_step_pct: 0
-              transition: 0
+        sequence: []

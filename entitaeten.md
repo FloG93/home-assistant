@@ -71,3 +71,7 @@ Hue-Bridge-eigene Automatisierungen (laufen in der Bridge, nicht in HA): `switch
 | Gerät | Raum | `device_id` |
 |---|---|---|
 | IKEA TRADFRI on/off switch (E1743) | Schlafzimmer | `c4d43ed7c7218e167b55741ae374bf26` |
+
+## Hinweis Schlafzimmer-Lampen
+
+`light.schlafzimmer_flo_bett` und `light.schlafzimmer_annika_bett` sind Hue-Lampen an der Hue Bridge (Integration `hue`), nicht am Sonoff-Dongle. Native ZHA-Cluster-Befehle (LevelControl Move/Stop) funktionieren fuer sie daher nicht. Dimmen per Taster laeuft ueber eine getaktete Schleife in der Automatisierung.
