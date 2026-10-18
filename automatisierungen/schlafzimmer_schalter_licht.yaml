@@ -1,0 +1,64 @@
+alias: Schlafzimmer Schalter (E1743) Licht
+description: Ein/Aus kurz schaltet die Gruppe, Ein/Aus lang drückt heller bzw. dunkler
+mode: single
+triggers:
+  - trigger: device
+    domain: zha
+    device_id: c4d43ed7c7218e167b55741ae374bf26
+    type: remote_button_short_press
+    subtype: turn_on
+    id: an
+  - trigger: device
+    domain: zha
+    device_id: c4d43ed7c7218e167b55741ae374bf26
+    type: remote_button_short_press
+    subtype: turn_off
+    id: aus
+  - trigger: device
+    domain: zha
+    device_id: c4d43ed7c7218e167b55741ae374bf26
+    type: remote_button_long_press
+    subtype: dim_up
+    id: heller
+  - trigger: device
+    domain: zha
+    device_id: c4d43ed7c7218e167b55741ae374bf26
+    type: remote_button_long_press
+    subtype: dim_down
+    id: dunkler
+actions:
+  - choose:
+      - conditions:
+          - condition: trigger
+            id: an
+        sequence:
+          - action: light.turn_on
+            target:
+              entity_id: light.schlafzimmer_schlafzimmer
+      - conditions:
+          - condition: trigger
+            id: aus
+        sequence:
+          - action: light.turn_off
+            target:
+              entity_id: light.schlafzimmer_schlafzimmer
+      - conditions:
+          - condition: trigger
+            id: heller
+        sequence:
+          - action: light.turn_on
+            target:
+              entity_id: light.schlafzimmer_schlafzimmer
+            data:
+              brightness_step_pct: 25
+              transition: 0.5
+      - conditions:
+          - condition: trigger
+            id: dunkler
+        sequence:
+          - action: light.turn_on
+            target:
+              entity_id: light.schlafzimmer_schlafzimmer
+            data:
+              brightness_step_pct: -25
+              transition: 0.5

@@ -65,3 +65,9 @@ Die Tastendrücke der beiden TRADFRI-Taster gibt es bei ZHA nicht als Entität. 
 | `automation.schlafzimmer_licht_bei_bewegung_sonnenuntergang_bis_22_30` | Schlafzimmer Licht bei Bewegung (Sonnenuntergang bis 22:30) |
 
 Hue-Bridge-eigene Automatisierungen (laufen in der Bridge, nicht in HA): `switch.hue_bridge_automation_hue_dimmer_switch_1`, `_naturlich_aufwachen`, `_abends`, `_abend`.
+
+## Geräte-IDs (für Gerätetrigger in ZHA)
+
+| Gerät | Raum | `device_id` |
+|---|---|---|
+| IKEA TRADFRI on/off switch (E1743) | Schlafzimmer | `c4d43ed7c7218e167b55741ae374bf26` |
