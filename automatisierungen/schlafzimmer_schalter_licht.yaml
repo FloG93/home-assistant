@@ -63,7 +63,7 @@ actions:
                 - condition: template
                   value_template: "{{ state_attr('light.schlafzimmer_schlafzimmer', 'brightness') | int(0) < 250 }}"
                 - condition: template
-                  value_template: "{{ repeat.index < 100 }}"
+                  value_template: "{{ repeat.index < 250 }}"
               sequence:
                 - action: light.turn_on
                   target:
@@ -72,7 +72,7 @@ actions:
                     brightness_step_pct: 2
                     transition: 0.1
                 - delay:
-                    milliseconds: 150
+                    milliseconds: 50
       - conditions:
           - condition: trigger
             id: dunkler
@@ -82,7 +82,7 @@ actions:
                 - condition: template
                   value_template: "{{ state_attr('light.schlafzimmer_schlafzimmer', 'brightness') | int(0) > 5 }}"
                 - condition: template
-                  value_template: "{{ repeat.index < 100 }}"
+                  value_template: "{{ repeat.index < 250 }}"
               sequence:
                 - action: light.turn_on
                   target:
@@ -91,7 +91,7 @@ actions:
                     brightness_step_pct: -2
                     transition: 0.1
                 - delay:
-                    milliseconds: 150
+                    milliseconds: 50
       - conditions:
           - condition: trigger
             id: stopp
